@@ -7,45 +7,52 @@ Window
     id: root
     width: 600
     height: 500
+    function blah(parent){
+        resize.anchors.fill = parent
+        resize.target = parent
 
-    Item
-    {
+    }
+
+    Resize{
+        id: resize
+
+    }
+
+    Item{
         id: positionAnchorHook
         width: 0
         height: 0
     }
 
-    property int pointWidth: 10
-    property int pointHeight: 10
-
-
-    Resize{
-        id: resize
-    }
-
     Rectangle{
-
-        height: 100
-        width: 100
+        id: redRect
+        height: 150
+        width: 150
         color: "red"
         MouseArea{
             anchors.fill: parent
             onPressed: {
-                resize.changeParent(parent)
+                blah(parent)
+                console.log("red")
             }
         }
     }
-    Rectangle{
 
+    Rectangle{
+        id: yellowRect
         height: 100
         width: 100
+        x:200
         color: "yellow"
+
         MouseArea{
             anchors.fill: parent
             onPressed: {
-                resize.changeParent(parent)
+                blah(parent)
+                console.log("yellow")
             }
         }
+
     }
 
 }

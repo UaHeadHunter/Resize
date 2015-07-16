@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.4.2, 2015-07-15T11:25:29. -->
+<!-- Written by QtCreator 3.4.2, 2015-07-16T22:04:09. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -102,7 +102,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.AutomaticallyAddedMakeArguments"/>
       <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
-      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">distclean</value>
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
@@ -227,8 +227,8 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">ResizeTest</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:D:/University/PLLUG/TEST/ResizeTest/ResizeTest.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">ResizeTest2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:D:/University/PLLUG/TEST/Resize/ResizeTest.pro</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">ResizeTest.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>
