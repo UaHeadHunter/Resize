@@ -2,24 +2,32 @@ import QtQuick 2.3
 
 Item
 {
-
     id: mainItem
-    x: -50
-    y: -50
-    z: target.z
+    x: -500
+    y: -500
+    z: -1
+
+
+        Rotation{
+        id: transformid
+            origin.x: mainItem.width / 2
+            origin.y: mainItem.height / 2
+
+        }
+
     property int pointWidth: 10
     property int pointHeight: 10
-    property int myZ: 100
-    property string dotColor: "blue"
+    property string dotColor: "black"
     property int clickedXInHandle: 0
     property int clickedYInHandle: 0
-    property Item target: mainItem
+    property Item target: null
+
 
 
     Rectangle{
         id: dragHandleRect
         anchors.centerIn: parent
-        color: "grey"
+        color: "lightsteelblue"
         width: parent.width + pointWidth
         height: parent.height + pointHeight
         MouseArea {
@@ -28,6 +36,75 @@ Item
             drag.axis: Drag.XAndYAxis
             anchors.fill: parent
             drag.threshold: 0
+            cursorShape: Qt.SizeAllCursor
+        }
+    }
+    Item{
+        id: rotateItem
+        height: pointHeight * 4
+        anchors.bottom: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        Rectangle{
+            id: rotateRect
+            property int angle: 0
+            property int oldAngle
+            property int newAngle:0
+            color: "red"
+
+
+            width: 20
+            height: 20
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+
+
+
+
+            MouseArea{
+                anchors.fill: parent;
+                                onPressed: {
+                                    rotateRect.oldAngle = rotateRect.angle
+                                }
+                                onReleased: {
+                                    rotateRect.newAngle = rotateRect.angle - rotateRect.oldAngle
+                                    positionAnchorHook.x = positionAnchorHook.x * Math.cos(rotateRect.newAngle * Math.PI / 180) + positionAnchorHook.y * Math.sin(rotateRect.newAngle * Math.PI / 180);
+                                    positionAnchorHook.y = -positionAnchorHook.x * Math.sin(rotateRect.newAngle * Math.PI / 180) + positionAnchorHook.y * Math.cos(rotateRect.newAngle * Math.PI / 180);
+                                    console.log(positionAnchorHook.x, positionAnchorHook.y)
+                                }
+
+
+                onPositionChanged:  {
+                    hiddenRotateCenter.x = mainItem.x
+                    hiddenRotateCenter.y = mainItem.y
+                    hiddenRotateCenter.width = mainItem.width
+                    hiddenRotateCenter.height = mainItem.height
+                    var point =  mapToItem (hiddenRotateCenter, mouse.x, mouse.y);
+                    var diffX = (point.x - hiddenRotateCenter.width / 2);
+                    var diffY = -(point.y - hiddenRotateCenter.height / 2);
+                    var rad = Math.atan (diffY / diffX);
+                    var deg = Math.abs(rad * 180 / Math.PI);
+
+                    if (diffX > 0 && diffY > 0) {
+                        rotateRect.angle = 90 - deg;
+                    }
+                    else if (diffX > 0 && diffY < 0) {
+                        rotateRect.angle = 90 + deg;
+
+                    }
+                    else if (diffX < 0 && diffY > 0) {
+                        rotateRect.angle = 270 + deg;
+
+                    }
+                    else if (diffX < 0 && diffY < 0) {
+                        rotateRect.angle = 270 - deg;
+
+                    }
+                    target.rotation = rotateRect.angle;
+                    mainItem.rotation = rotateRect.angle;
+
+
+                }
+            }
         }
     }
     MouseArea {
@@ -38,7 +115,7 @@ Item
         anchors.bottom: parent.top
         drag.target: topHandle
         drag.axis: Drag.YAxis
-
+        cursorShape: Qt.SizeVerCursor
         onPressed:
         {
             positionAnchorHook.anchors.bottom = target.bottom
@@ -63,11 +140,8 @@ Item
                 target.height = newHeight
         }
 
-        Rectangle
-        {
-            id: topHandleRect
-            anchors.fill: parent
-            color: dotColor
+        ResizeDot{
+
         }
     }
     MouseArea {
@@ -78,7 +152,7 @@ Item
         anchors.top: parent.bottom
         drag.target: botHandle
         drag.axis: Drag.YAxis
-
+        cursorShape: Qt.SizeVerCursor
         onPressed:
         {
             positionAnchorHook.anchors.top = target.top
@@ -106,11 +180,8 @@ Item
             }
         }
 
-        Rectangle
-        {
-            id: botHandleRect
-            anchors.fill: parent
-            color: dotColor
+        ResizeDot{
+
         }
     }
     MouseArea {
@@ -121,7 +192,7 @@ Item
         anchors.right: parent.left
         drag.target: leftHandle
         drag.axis: Drag.XAxis
-
+        cursorShape: Qt.SizeHorCursor
         onPressed:
         {
             positionAnchorHook.anchors.right = target.right
@@ -145,11 +216,8 @@ Item
                 target.width = newWidth
         }
 
-        Rectangle
-        {
-            id: leftHandleRect
-            anchors.fill: parent
-            color: dotColor
+        ResizeDot{
+
         }
     }
     MouseArea {
@@ -161,6 +229,7 @@ Item
         drag.target: rightHandle
         drag.axis: Drag.XAxis
 
+        cursorShape: Qt.SizeHorCursor
         onPressed:
         {
             positionAnchorHook.anchors.left = target.left
@@ -185,11 +254,7 @@ Item
                 target.width = newWidth
         }
 
-        Rectangle
-        {
-            id: rightHandleRect
-            anchors.fill: parent
-            color: dotColor
+        ResizeDot{
 
         }
     }
@@ -201,7 +266,7 @@ Item
         anchors.bottom: parent.top
         drag.target: topHandle
         drag.axis: Drag.YAxis
-
+        cursorShape: Qt.SizeFDiagCursor
         onPressed:
         {
             positionAnchorHook.anchors.bottom = target.bottom
@@ -238,11 +303,8 @@ Item
             }
         }
 
-        Rectangle
-        {
-            id: lefttopHandleRect
-            anchors.fill: parent
-            color: dotColor
+        ResizeDot{
+
         }
     }
     MouseArea {
@@ -253,6 +315,7 @@ Item
         anchors.bottom: parent.top
         drag.target: topHandle
         drag.axis: Drag.YAxis
+        cursorShape: Qt.SizeBDiagCursor
 
         onPressed:
         {
@@ -261,7 +324,7 @@ Item
             target.anchors.bottom = positionAnchorHook.bottom
             target.anchors.left = positionAnchorHook.left
 
-            clickedXInHandle = pointWidth - mouseX
+            clickedXInHandle = mouseX
             clickedYInHandle = pointHeight - mouseY
 
         }
@@ -289,12 +352,8 @@ Item
                 target.width = newWidth
             }
         }
+        ResizeDot{
 
-        Rectangle
-        {
-            id: rightTopHandleRect
-            anchors.fill: parent
-            color: dotColor
         }
     }
     MouseArea {
@@ -305,6 +364,7 @@ Item
         anchors.top: parent.bottom
         drag.target: topHandle
         drag.axis: Drag.YAxis
+        cursorShape: Qt.SizeBDiagCursor
 
         onPressed:
         {
@@ -314,7 +374,7 @@ Item
             target.anchors.right = positionAnchorHook.right
 
             clickedXInHandle = pointWidth - mouseX
-            clickedYInHandle = pointHeight - mouseY
+            clickedYInHandle = mouseY
 
         }
 
@@ -341,13 +401,10 @@ Item
                 target.width = newWidth
             }
         }
+        ResizeDot{
 
-        Rectangle
-        {
-            id: leftBotHandleRect
-            anchors.fill: parent
-            color: dotColor
         }
+
     }
     MouseArea {
         id: rightBotHandle
@@ -357,6 +414,7 @@ Item
         anchors.top: parent.bottom
         drag.target: topHandle
         drag.axis: Drag.YAxis
+        cursorShape: Qt.SizeFDiagCursor
 
         onPressed:
         {
@@ -365,8 +423,8 @@ Item
             target.anchors.top = positionAnchorHook.top
             target.anchors.left = positionAnchorHook.left
 
-            clickedXInHandle = pointWidth - mouseX
-            clickedYInHandle = pointHeight - mouseY
+            clickedXInHandle = mouseX
+            clickedYInHandle = mouseY
 
         }
 
@@ -394,11 +452,8 @@ Item
             }
         }
 
-        Rectangle
-        {
-            id: rightBotHandleRect
-            anchors.fill: parent
-            color: dotColor
+        ResizeDot{
+
         }
     }
 
